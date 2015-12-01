@@ -1,0 +1,20 @@
+{
+  "name": "geggleto/slim-pimple-bridge",
+  "description": "Slim Pimple Bridge. Inject's slim's dependencies into a Pimple Container",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Glenn Eggleton",
+      "email": "geggleto@gmail.com"
+    }
+  ],
+  "autoload" : {
+    "psr-4" : {
+      "Geggleto\\" : "src"
+    }
+  },
+  "require": {
+    "slim/slim": "^3.0@RC"
+  }
+}
