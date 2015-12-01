@@ -3,8 +3,8 @@
 namespace Geggleto\Test;
 
 use Geggleto\SlimPimpleBridge;
-use Slim\Container as SlimContainer;
 use Pimple\Container as PimpleContainer;
+use Slim\Container as SlimContainer;
 
 class SlimPimpleBridgeTest extends \PHPUnit_Framework_TestCase
 {
