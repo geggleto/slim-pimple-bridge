@@ -9,28 +9,48 @@ namespace Geggleto;
 
 use Pimple\Container as PimpleContainer;
 use Pimple\ServiceProviderInterface;
+use Slim\Container as SlimContainer;
 
 final class SlimPimpleBridge implements ServiceProviderInterface
 {
     /**
-     * Public constructor.
-     *
-     * @param PimpleContainer $container Your existing Pimple container
+     * @var PimpleContainer
      */
-    public function __construct(PimpleContainer $container)
+    private $pimpleContainer;
+
+    /**
+     * Private constructor.
+     *
+     * @param PimpleContainer $pimpleContainer
+     */
+    private function __construct(PimpleContainer $pimpleContainer)
     {
-        $this->container = $container;
+        $this->pimpleContainer = $pimpleContainer;
     }
 
     /**
-     * {@inheritdoc}
+     * Merge a Pimple\Container with a Slim\Container.
      *
-     * @see http://pimple.sensiolabs.org/#extending-a-container
+     * @param SlimContainer   $slimContainer
+     * @param PimpleContainer $pimpleContainer
+     *
+     * @return SlimContainer The original $slimContainer, which now includes
+     *                       all of the services from the $pimpleContainer
      */
-    public function register(PimpleContainer $pimple)
+    public static function merge(SlimContainer $slimContainer, PimpleContainer $pimpleContainer)
     {
-        foreach ($this->container->keys() as $key) {
-            $pimple[$key] = $this->container->raw($key);
+        $slimContainer->register(new self($pimpleContainer));
+
+        return $slimContainer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function register(PimpleContainer $slimContainer)
+    {
+        foreach ($this->pimpleContainer->keys() as $key) {
+            $slimContainer[$key] = $this->pimpleContainer->raw($key);
         }
     }
 }
