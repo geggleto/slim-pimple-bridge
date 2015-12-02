@@ -11,19 +11,23 @@ class SlimPimpleBridgeTest extends \PHPUnit_Framework_TestCase
     public function testSlimPimpleBridge()
     {
         // Represents an existing container that needs to be integrated into
-        // the Slim\Container
+        // a Slim\Container
         $myExistingPimpleContainer = new PimpleContainer();
+        // Define some services
         $myExistingPimpleContainer['test'] = function ($c) {
             return 'TEST';
         };
 
-        $bridge = new SlimPimpleBridge($myExistingPimpleContainer);
-
         $slimContainer = new SlimContainer();
 
-        // Uses the SlimPimpleBridge to add existing services to the SlimContainer
-        $slimContainer->register($bridge);
+        // Now merge the two containers!
+        $container = SlimPimpleBridge::merge(
+            $slimContainer,
+            $myExistingPimpleContainer
+        );
 
-        $this->assertEquals('TEST', $slimContainer->get('test'));
+        $this->assertSame($slimContainer, $container);
+        $this->assertInstanceOf('Slim\Handlers\Error', $container->get('errorHandler'));
+        $this->assertEquals('TEST', $container->get('test'));
     }
 }
