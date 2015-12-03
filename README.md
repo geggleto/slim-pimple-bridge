@@ -1,7 +1,9 @@
 # Slim-Pimple Bridge
 
-Allows use of an existing Pimple 3.x container with Slim 3.x without rewriting
-your container or adding the required Slim services.
+The Slim-Pimple Bridge allows you to "bring your own"
+[Pimple](http://pimple.sensiolabs.org/) 3.x container to a
+[Slim](http://www.slimframework.com/) 3.x application without requiring you to
+refactor your existing container.
 
 ## Installation
 
@@ -9,16 +11,20 @@ your container or adding the required Slim services.
 
 ## Usage
 
+The example below assumes that your `Pimple\Container` instance is assigned to the
+`$myAwesomePimpleContainer` variable.
+
 ``` php
-// Assumes $yourExistingContainer is an instance of Pimple\Container
+// Here's a default \Slim\Container.
+$slimContainer = new \Slim\Container();
 
-$slimContainer = new SlimContainer();
-
-// $container is $slimContainer, which now includes all services defined on $myExistingContainer
+// Use SlimPimpleBridge::merge() to add all of the services from your container
+// to the $slimContainer instance.
 $container = SlimPimpleBridge::merge(
     $slimContainer,
-    $myExistingContainer
+    $myAwesomePimpleContainer
 );
 
+// Done! It's that easy!
 $app = new \Slim\App($container);
 ```
